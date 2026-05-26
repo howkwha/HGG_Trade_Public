@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HGG_VIEW Perspective Package</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>HGG_VIEW Perspective Package</h1>
+      <p id="metaLine">Static perspective review</p>
+    </div>
+    <div class="actions" aria-label="Export and import controls">
+      <label class="timeframe-control">
+        시간봉
+        <select id="timeframeSelect" aria-label="HGG_VIEW timeframe selector">
+          <option value="1d">일봉</option>
+        </select>
+      </label>
+      <label class="file-button">
+        데이터 불러오기
+        <input id="dataFile" type="file" accept="application/json,.json,text/csv,.csv" />
+      </label>
+      <label class="file-button">
+        주석 가져오기
+        <input id="importFile" type="file" accept="application/json,.json" />
+      </label>
+      <button id="exportBtn" type="button">JSON 저장</button>
+      <button id="copyBtn" type="button">JSON 복사</button>
+      <button id="markdownExportBtn" type="button">MD 저장</button>
+      <button id="markdownCopyBtn" type="button">MD 복사</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <aside class="toolbar" aria-label="Drawing tools">
+      <button class="tool active" data-tool="select" type="button">선택</button>
+      <button class="tool" data-tool="zone" type="button">구역</button>
+      <button class="tool" data-tool="line" type="button">선</button>
+      <button class="tool" data-tool="pattern_boundary" type="button">패턴</button>
+      <button class="tool" data-tool="fib" type="button">피보</button>
+      <button class="tool" data-tool="note" type="button">메모</button>
+      <button class="tool" data-tool="entry" type="button">진입</button>
+      <button class="tool" data-tool="stop" type="button">손절</button>
+      <button class="tool" data-tool="tp1" type="button">TP1</button>
+      <button id="undoBtn" type="button">되돌리기</button>
+      <button id="clearBtn" type="button">초기화</button>
+      <div class="hint" id="toolHint">도구를 선택한 뒤 차트 위를 클릭하세요.</div>
+    </aside>
+
+    <section class="chart-shell">
+      <div id="chartWrap" class="chart-wrap">
+        <div id="chart"></div>
+        <svg id="annotationLayer" aria-hidden="true"></svg>
+        <div id="valueReadout" class="value-readout" aria-live="polite"></div>
+      </div>
+      <section class="lower-grid">
+        <div>
+          <h2>RSI 14</h2>
+          <div id="rsiChart" class="mini-chart"></div>
+        </div>
+        <div>
+          <h2>Short Stochastic 5-3-3</h2>
+          <div id="stoShortChart" class="mini-chart"></div>
+        </div>
+        <div>
+          <h2>Middle Stochastic 10-6-6</h2>
+          <div id="stoMiddleChart" class="mini-chart"></div>
+        </div>
+        <div>
+          <h2>Long Stochastic 20-12-12</h2>
+          <div id="stoLongChart" class="mini-chart"></div>
+        </div>
+      </section>
+    </section>
+
+    <aside class="sidepanel">
+      <section>
+        <h2>검토 요약</h2>
+        <label>
+          검토자
+          <input id="reviewerInput" type="text" placeholder="예: HGG" />
+        </label>
+        <div class="rating-grid">
+          <label>
+            전체 관점
+            <select id="overallRating">
+              <option value="">미평가</option>
+              <option value="good">good</option>
+              <option value="weak">weak</option>
+              <option value="wrong">wrong</option>
+              <option value="missing_context">missing_context</option>
+            </select>
+          </label>
+          <label>
+            근거 조합
+            <select id="evidenceRating">
+              <option value="">미평가</option>
+              <option value="good">good</option>
+              <option value="weak">weak</option>
+              <option value="wrong">wrong</option>
+              <option value="missing_context">missing_context</option>
+            </select>
+          </label>
+          <label>
+            레벨 판단
+            <select id="levelRating">
+              <option value="">미평가</option>
+              <option value="good">good</option>
+              <option value="weak">weak</option>
+              <option value="wrong">wrong</option>
+              <option value="missing_context">missing_context</option>
+            </select>
+          </label>
+          <label>
+            시각 가독성
+            <select id="visualRating">
+              <option value="">미평가</option>
+              <option value="good">good</option>
+              <option value="weak">weak</option>
+              <option value="wrong">wrong</option>
+              <option value="missing_context">missing_context</option>
+            </select>
+          </label>
+        </div>
+        <label>
+          검토 메모
+          <textarea id="reviewNoteInput" rows="4" placeholder="관점 품질, 근거 품질, 무효화 논리, 포지션 평가를 적습니다."></textarea>
+        </label>
+      </section>
+
+      <section>
+        <h2>주석 설명</h2>
+        <label>
+          이름
+          <input id="labelInput" type="text" placeholder="SR1, FIB1, L entry..." />
+        </label>
+        <label>
+          연결 근거 ID
+          <input id="evidenceInput" type="text" placeholder="SR1 / FIB1 / INV1" />
+        </label>
+        <label>
+          설명
+          <textarea id="commentInput" rows="5" placeholder="이 구간을 어떻게 수정하거나 평가해야 하는지 적어주세요."></textarea>
+        </label>
+        <div class="panel-actions">
+          <button id="applyEditBtn" type="button" disabled>선택 주석 수정</button>
+          <button id="clearSelectionBtn" type="button" disabled>선택 해제</button>
+          <button id="deleteSelectedBtn" type="button" disabled>선택 삭제</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>주석 목록</h2>
+        <ol id="annotationList" class="annotation-list"></ol>
+      </section>
+    </aside>
+  </main>
+
+  <script src="vendor/lightweight-charts.standalone.production.js"></script>
+  <script>
+    if (!window.LightweightCharts) {
+      document.write('<script src="../vendor/lightweight-charts.standalone.production.js"><\/script>');
+    }
+  </script>
+  <script src="perspective_data.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if (!window.HGG_REVIEWER_APP_LOADED) {
+      document.write('<script src="../app.js"><\/script>');
+    }
+  </script>
+</body>
+</html>
