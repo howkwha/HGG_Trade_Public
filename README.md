@@ -2,7 +2,7 @@
 
 This repository contains public-safe static HGG_VIEW perspective packages copied from the private HGG_Trade workspace.
 
-Generated at: 2026-05-26 22:54:01 +09:00
+Generated at: 2026-05-26 23:06:03 +09:00
 
 Published package count: 2
 
